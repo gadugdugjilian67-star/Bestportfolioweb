@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Jilian M. Gadugdug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Live Blue Highlight Effects */
+        .blue-highlight {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blue-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.4), transparent);
+            animation: shimmer 3s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5), 0 0 20px rgba(96, 165, 250, 0.3), 0 0 30px rgba(96, 165, 250, 0.2);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(96, 165, 250, 0.5), 0 0 20px rgba(96, 165, 250, 0.3), 0 0 30px rgba(96, 165, 250, 0.2); }
+            to { text-shadow: 0 0 20px rgba(96, 165, 250, 0.8), 0 0 30px rgba(96, 165, 250, 0.6), 0 0 40px rgba(96, 165, 250, 0.4); }
+        }
+        
+        .pulse-border {
+            border: 2px solid rgba(96, 165, 250, 0.5);
+            animation: pulseBorder 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBorder {
+            0%, 100% { border-color: rgba(96, 165, 250, 0.5); box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4); }
+            50% { border-color: rgba(96, 165, 250, 1); box-shadow: 0 0 0 10px rgba(96, 165, 250, 0); }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(45deg, rgba(96, 165, 250, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(96, 165, 250, 0.3), transparent 30%);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 5px rgba(96, 165, 250, 0.5), 0 0 10px rgba(96, 165, 250, 0.4), 0 0 15px rgba(96, 165, 250, 0.3), 0 0 20px rgba(96, 165, 250, 0.2);
+            animation: neonPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.5), 0 0 10px rgba(96, 165, 250, 0.4), 0 0 15px rgba(96, 165, 250, 0.3), 0 0 20px rgba(96, 165, 250, 0.2); }
+            50% { box-shadow: 0 0 10px rgba(96, 165, 250, 0.8), 0 0 20px rgba(96, 165, 250, 0.6), 0 0 30px rgba(96, 165, 250, 0.4), 0 0 40px rgba(96, 165, 250, 0.3); }
+        }
+        
+        .skill-bar {
+            transition: width 2s ease-in-out;
+        }
+        
+        /* Loader Styles */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loader-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loader-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .loader-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .loader-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            border-radius: 2px;
+            animation: loading 2s ease-in-out;
+            transform-origin: left;
+        }
+        
+        @keyframes loading {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white scroll-smooth">
+    <!-- Loader Overlay -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Loading Portfolio...</div>
+        <div class="loader-progress">
+            <div class="loader-progress-bar"></div>
+        </div>
+    </div>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-300 glow-text">JG</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-blue-300 transition-colors glow-text">Home</a>
+                    <a href="#about" class="hover:text-blue-300 transition-colors glow-text">About</a>
+                    <a href="#projects" class="hover:text-blue-300 transition-colors glow-text">Projects</a>
+                    <a href="#skills" class="hover:text-blue-300 transition-colors glow-text">Skills</a>
+                    <a href="#contact" class="hover:text-blue-300 transition-colors glow-text">Contact</a>
+                </div>
+                <button id="menu-btn" class="md:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen gradient-bg flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-20 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-float neon-glow"></div>
+            <div class="absolute top-40 right-20 w-72 h-72 bg-cyan-400 rounded-full mix-blend-multiply filter blur-xl animate-float neon-glow" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl animate-float neon-glow" style="animation-delay: 4s;"></div>
+        </div>
+        
+        <div class="text-center z-10 px-6">
+            <!-- Image Upload Section -->
+            <div class="mb-8">
+                <div id="image-container" class="w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden pulse-border bg-slate-800 flex items-center justify-center relative neon-glow">
+                    <div id="placeholder" class="text-blue-300 text-center glow-text">
+                        <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="text-sm">Click to upload image</p>
+                    </div>
+                    <img id="uploaded-image" class="w-full h-full object-cover hidden" alt="Profile">
+                </div>
+                <input type="file" id="image-upload" accept="image/*" class="hidden">
+                <button onclick="document.getElementById('image-upload').click()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full text-sm font-semibold transition-colors neon-glow">
+                    Upload Photo
+                </button>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in blue-highlight">
+                <span class="text-blue-300 glow-text">Jilian M. Gadugdug</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-blue-100 glow-text">Full Stack Developer & UI/UX Designer</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToSection('projects')" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-full font-semibold transition-all hover-lift neon-glow">
+                    View My Work
+                </button>
+                <button onclick="scrollToSection('contact')" class="border-2 border-blue-300 hover:bg-blue-300 hover:text-slate-900 px-8 py-3 rounded-full font-semibold transition-all pulse-border">
+                    Get In Touch
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16 text-blue-300 glow-text blue-highlight">About Me</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        I'm a passionate full-stack developer with 5+ years of experience creating digital experiences that combine beautiful design with robust functionality. I love turning complex problems into simple, elegant solutions.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or enjoying a good cup of coffee while sketching out my next big idea.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="bg-blue-600 px-4 py-2 rounded-full text-sm neon-glow">React</span>
+                        <span class="bg-blue-600 px-4 py-2 rounded-full text-sm neon-glow">Node.js</span>
+                        <span class="bg-blue-600 px-4 py-2 rounded-full text-sm neon-glow">Python</span>
+                        <span class="bg-blue-600 px-4 py-2 rounded-full text-sm neon-glow">UI/UX Design</span>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-2xl p-8 hover-lift highlight-box">
+                    <div class="text-center">
+                        <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-6 flex items-center justify-center text-4xl font-bold neon-glow">
+                            JG
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 glow-text">Jilian M. Gadugdug</h3>
+                        <p class="text-blue-300 mb-6 glow-text">Full Stack Developer</p>
+                        <div class="flex justify-center space-x-4">
+                            <button class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors neon-glow">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                </svg>
+                            </button>
+                            <button class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors neon-glow">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                            </button>
+                            <button class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors neon-glow">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-6 bg-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16 text-blue-300 glow-text blue-highlight">Featured Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="glass-effect rounded-xl overflow-hidden hover-lift highlight-box">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center neon-glow">
+                        <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3 glow-text">E-Commerce App</h3>
+                        <p class="text-gray-300 mb-4">A modern mobile-first e-commerce platform built with React Native and Node.js</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">React Native</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">Node.js</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">MongoDB</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">Live Demo</button>
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">GitHub</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-effect rounded-xl overflow-hidden hover-lift highlight-box">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center neon-glow">
+                        <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3 glow-text">Analytics Dashboard</h3>
+                        <p class="text-gray-300 mb-4">Real-time data visualization dashboard with interactive charts and insights</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">Vue.js</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">D3.js</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">Python</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">Live Demo</button>
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">GitHub</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-effect rounded-xl overflow-hidden hover-lift highlight-box">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center neon-glow">
+                        <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3 glow-text">Chat Application</h3>
+                        <p class="text-gray-300 mb-4">Real-time messaging app with file sharing and video calls</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">React</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">Socket.io</span>
+                            <span class="text-xs bg-blue-600 px-2 py-1 rounded neon-glow">WebRTC</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">Live Demo</button>
+                            <button class="text-blue-300 hover:text-blue-200 transition-colors glow-text">GitHub</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16 text-blue-300 glow-text blue-highlight">Skills & Expertise</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-semibold mb-6 glow-text">Technical Skills</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>JavaScript/TypeScript</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="skill-bar bg-blue-500 h-2 rounded-full neon-glow" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>React/Vue.js</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="skill-bar bg-blue-500 h-2 rounded-full neon-glow" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Node.js/Python</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="skill-bar bg-blue-500 h-2 rounded-full neon-glow" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>UI/UX Design</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="skill-bar bg-blue-500 h-2 rounded-full neon-glow" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-semibold mb-6 glow-text">Tools & Technologies</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">⚛️</div>
+                            <div class="font-semibold glow-text">React</div>
+                        </div>
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">🟢</div>
+                            <div class="font-semibold glow-text">Node.js</div>
+                        </div>
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">🐍</div>
+                            <div class="font-semibold glow-text">Python</div>
+                        </div>
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">🎨</div>
+                            <div class="font-semibold glow-text">Figma</div>
+                        </div>
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">🐳</div>
+                            <div class="font-semibold glow-text">Docker</div>
+                        </div>
+                        <div class="glass-effect p-4 rounded-lg text-center hover-lift highlight-box">
+                            <div class="text-2xl mb-2">☁️</div>
+                            <div class="font-semibold glow-text">AWS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 bg-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8 text-blue-300 glow-text blue-highlight">Let's Work Together</h2>
+            <p class="text-xl text-gray-300 mb-12">Have a project in mind? I'd love to hear about it and discuss how we can bring your ideas to life.</p>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="glass-effect p-6 rounded-xl hover-lift highlight-box">
+                    <div class="text-3xl mb-4">📧</div>
+                    <h3 class="font-semibold mb-2 glow-text">Email</h3>
+                    <p class="text-blue-300 glow-text">alex@example.com</p>
+                </div>
+                <div class="glass-effect p-6 rounded-xl hover-lift highlight-box">
+                    <div class="text-3xl mb-4">📱</div>
+                    <h3 class="font-semibold mb-2 glow-text">Phone</h3>
+                    <p class="text-blue-300 glow-text">+1 (555) 123-4567</p>
+                </div>
+                <div class="glass-effect p-6 rounded-xl hover-lift highlight-box">
+                    <div class="text-3xl mb-4">📍</div>
+                    <h3 class="font-semibold mb-2 glow-text">Location</h3>
+                    <p class="text-blue-300 glow-text">San Francisco, CA</p>
+                </div>
+            </div>
+            
+            <div class="glass-effect p-8 rounded-2xl max-w-2xl mx-auto highlight-box">
+                <form class="space-y-6" onsubmit="handleSubmit(event)">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Your Name" class="w-full p-4 bg-slate-700 rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none transition-colors pulse-border" required>
+                        <input type="email" placeholder="Your Email" class="w-full p-4 bg-slate-700 rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none transition-colors pulse-border" required>
+                    </div>
+                    <input type="text" placeholder="Subject" class="w-full p-4 bg-slate-700 rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none transition-colors pulse-border" required>
+                    <textarea placeholder="Your Message" rows="5" class="w-full p-4 bg-slate-700 rounded-lg border border-slate-600 focus:border-blue-500 focus:outline-none transition-colors resize-none pulse-border" required></textarea>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-semibold transition-colors hover-lift neon-glow">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-slate-700">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-400">&copy; 2024 Jilian M. Gadugdug. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Mobile menu toggle
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            // Simple mobile menu toggle (you can expand this)
+            alert('Mobile menu would open here');
+        });
+
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! This is a demo form.');
+        }
+
+        // Animate skill bars on scroll
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-bar');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.style.width;
+                    }
+                });
+            });
+
+            skillBars.forEach(bar => {
+                observer.observe(bar);
+            });
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            animateSkillBars();
+            
+            // Hide loader after page loads
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.classList.add('fade-out');
+                
+                // Remove loader from DOM after fade out
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 2000); // Show loader for 2 seconds
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // Image upload functionality
+        document.getElementById('image-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploadedImage = document.getElementById('uploaded-image');
+                    const placeholder = document.getElementById('placeholder');
+                    
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Make image container clickable
+        document.getElementById('image-container').addEventListener('click', function() {
+            document.getElementById('image-upload').click();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99dc397c4429b9fb',t:'MTc2MzAxNTQ2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
